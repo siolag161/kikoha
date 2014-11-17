@@ -11,6 +11,7 @@ module.exports = (grunt) ->
     js: name + '/static/js'
     config: name + '/config'
     tests: 'tests'
+    vendors: './bower_components'
 
   # Loads grunt config automatically via broken up tasks
   # https://github.com/firstandthird/load-grunt-config

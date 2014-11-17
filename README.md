@@ -105,6 +105,17 @@ Recommended to use foreman to use development environment variables and processe
     echo "env: .env.dev" > .foreman
     echo "procfile: Procfile.dev" >> .foreman
 
+You can also add the local settings in kikoha/config/settings directory:
+
+    echo "try:" >> kikoha/config/settings/dev.py
+    echo "  from .local_settings import *" >> kikoha/config/settings/dev.py
+    echo "except ImportError:" >> kikoha/config/settings/dev.py
+    echo "  pass" >> kikoha/config/settings/dev.py
+
+In `local_settings` we define the database authentification etc... and try to avoid include in version control this way
+
+   echo "local*.py # if not already done" >> .gitignore
+
 Create local postgres database for dev
 --------------------------------------
 
@@ -364,6 +375,7 @@ Locally using node and grunt to watch and compile frontend files
 - [coffee-script ^1.8.0](http://coffeescript.org/) - Cleaner JavaScript
 - [grunt ~0.4.5](http://gruntjs.com/) - Automatic Task Runner
 - [grunt-autoprefixer ^2.0.0](https://github.com/nDmitry/grunt-autoprefixer) - Parse CSS and add vendor-prefixed CSS properties
+- [grunt-bower-concat ~0.4.0](https://github.com/sapegin/grunt-bower-concat) - Automatic concatenation of installed Bower components (JS and/or CSS) in the right order. Useful for grabbing the bower files and putting them in the correct destination
 - [grunt-coffeelint 0.0.13](https://github.com/vojtajina/grunt-coffeelint) - Lint your CoffeeScript
 - [grunt-concurrent ^1.0.0](https://github.com/sindresorhus/grunt-concurrent) - Run grunt tasks concurrently
 - [grunt-contrib-clean ^0.6.0](https://github.com/gruntjs/grunt-contrib-clean) - Clear files and folders
@@ -386,10 +398,12 @@ Locally using node and grunt to watch and compile frontend files
 
 Static Assets
 =============
+We will use bower for managing most of the static assets, including:
 
 Fonts
 -----
-@todo
+- [Bootstrap 4.2.0](http://fortawesome.github.io/Font-Awesome/) - Free font
+
 
 CSS
 ---
@@ -400,12 +414,12 @@ JS
 - [jQuery 1.11.1](https://api.jquery.com/) - Useful JS functions
 - [Bootstrap 3.3.0](http://getbootstrap.com) - CSS/JS starting framework
 - [Underscore.js 1.7.0](http://underscorejs.org) - Very useful functional programming helpers
-- [CSRF.js](https://docs.djangoproject.com/en/dev/ref/contrib/csrf/#ajax) - Django Cross Site Request Forgery protection via AJAX
+- [CSRF.js](https://docs.djangoproject.com/en/dev/ref/contrib/csrf/#ajax) - Django Cross Site Request Forgery protection via AJAX (this one is not managed by bower)
 
 Jasmine
 -------
 - [Jasmine-Ajax 2.0.1](http://github.com/pivotal/jasmine-ajax) - Set of helpers for testing AJAX requests with Jasmine
-- [Jasmine-jQuery 2.0.5](https://github.com/velesin/jasmine-jquery) - Set of jQuery helpers for Jasmine
+- [Jasmine-jQuery 1.7.0](https://github.com/velesin/jasmine-jquery) - Set of jQuery helpers for Jasmine
 
 Acknowledgements
 ================

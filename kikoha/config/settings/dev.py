@@ -18,16 +18,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ########## DATABASE CONFIGURATION 
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': '%s-dev' % PROJECT_NAME.lower(),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+
 ########## END DATABASE CONFIGURATION
 
 
@@ -116,7 +107,7 @@ DEBUG_TOOLBAR_PATCH_SETTINGS = False
 # http://django-debug-toolbar.readthedocs.org/en/latest/installation.html
 INTERNAL_IPS = ('127.0.0.1',)
 ########## END TOOLBAR CONFIGURATION
-
+ 
 
 ########## SSL SERVER CONFIGURATION
 # https://github.com/teddziuba/django-sslserver#getting-started
@@ -124,3 +115,7 @@ INSTALLED_APPS += (
     'sslserver',
 )
 ########## END SSL SERVER CONFIGURATION
+try:
+    from .local import *
+except ImportError:
+    print 'aaaaaaaaaaaaaaaaaaaaaaaaaaa'

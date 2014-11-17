@@ -16,3 +16,9 @@ module.exports =
   specRunner:
     src: '_SpecRunner.html'
     dest: '<%= paths.tests %>/jasmine/index.html'
+ 
+  font_bower:
+    expand: true
+    flatten: true
+    src: '<%= paths.vendors %>/*/fonts/*'
+    dest: '<%= paths.fonts %>'

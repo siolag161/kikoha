@@ -11,6 +11,9 @@ lint:
   - 'lint_stylesheets'
   - 'lint_scripts'
 
+build_vendors:
+  - 'bower_concat'
+
 build_stylesheets:
   - 'clean:stylesheets'
   - 'sass'
@@ -25,9 +28,17 @@ build_images:
   - 'clean:images'
   - 'imagemin'
 
+build_bower_fonts:
+  - 'copy:font_bower'
+
+build_bower:
+  - 'build_bower_fonts'
+  - 'bower_concat'
+
 build:
   - 'build_stylesheets'
   - 'build_scripts'
+  - 'build_bower'
   - 'build_images'
 
 heroku:
