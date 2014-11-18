@@ -129,7 +129,6 @@ INSTALLED_APPS += (
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-html-dir="./logs"',
     '--cover-html',
     '--cover-package=accounts',
     
