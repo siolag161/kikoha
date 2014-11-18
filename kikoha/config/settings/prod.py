@@ -186,3 +186,10 @@ if 'AWS_ACCESS_KEY_ID' in os.environ:
     DEFAULT_FILE_STORAGE = 'config.settings.prod.MediaRootS3BotoStorage'
     MEDIA_URL = S3_MEDIA_URL
 ########## END AMAZON S3 CONFIGURATION
+
+
+
+try:
+    from .local import *
+except ImportError:
+    pass

@@ -119,3 +119,18 @@ try:
     from .local import *
 except ImportError:
     print 'aaaaaaaaaaaaaaaaaaaaaaaaaaa'
+
+INSTALLED_APPS += (
+    'django_nose',
+)
+
+
+##### TESTING SUITE ####
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-html-dir="./logs"',
+    '--cover-html',
+    '--cover-package=accounts',
+    
+]

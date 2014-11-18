@@ -21,4 +21,4 @@ module.exports =
     expand: true
     flatten: true
     src: '<%= paths.vendors %>/*/fonts/*'
-    dest: '<%= paths.fonts %>'
+    dest: '<%= paths.css %>/fonts'

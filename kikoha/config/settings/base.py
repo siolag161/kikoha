@@ -65,9 +65,9 @@ DJANGO_APPS = (
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.admindocs',
-)
+) 
 
-THIRD_PARTY_APPS = (
+THIRD_PARTY_APPS = ( 
     'django_extensions',
     'django_rq',
     'crispy_forms',  # Form layouts    
@@ -75,6 +75,7 @@ THIRD_PARTY_APPS = (
     'allauth',  # registration
     'allauth.account',  # registration
     'pipeline',
+    #'relationships',
 )
 
 PROJECT_APPS = (
@@ -216,11 +217,13 @@ STATICFILES_FINDERS = (
     'pipeline.finders.CachedFileFinder',
 )
 
-# STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+
 ########## END STATIC FILE CONFIGURATION
 
 
 ########## PIPELINE CONFIGURATION
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 # https://django-pipeline.readthedocs.org/en/latest/configuration.html
 PIPELINE_CSS = {
     'master': {
@@ -247,8 +250,10 @@ PIPELINE_JS = {
         },
     }
 }
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.uglifyjs.UglifyJSCompressor'
+PIPELINE_UGLIFYJS_BINARY = '/usr/bin/env uglifyjs'
+PIPELINE_UGLIFYJS_ARGUMENTS = ''
 
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 ########## END PIPELINE CONFIGURATION
 
 
