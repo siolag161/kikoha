@@ -5,10 +5,11 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
 
 urlpatterns = [
-    # Core URLs
+    # Core
     url(r'^', include('core.urls', namespace='core')),
 
     url(r'^users/', include("accounts.urls", namespace="users")),
+    #url(r'^links/', include("links.urls",   namespace="links") ),
     url(r'^accounts/', include('allauth.urls')), 
     url(r'^avatar/', include('avatar.urls')),
 
@@ -25,6 +26,10 @@ urlpatterns = [
 
 admin.site.site_header = '%s Headquarters' % settings.PROJECT_NAME
 admin.site.index_title = 'Base of Operations'
+
+urlpatterns += [
+    url(r'^links/', include("links.urls", namespace="links") )
+]
 
 if settings.DEBUG:
     urlpatterns += [

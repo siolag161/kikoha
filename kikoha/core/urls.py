@@ -1,7 +1,9 @@
-from django.conf.urls import url
+from django.conf.urls import url, patterns
 
-from .views import home
+from .views import home, cached_home
 
-urlpatterns = [
-    url(r'^$', home, name='home'),
-]
+
+urlpatterns = patterns(
+    '',
+    url(r'^$', cached_home, name='home'),
+)

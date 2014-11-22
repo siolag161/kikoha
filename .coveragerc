@@ -15,6 +15,7 @@ exclude_lines =
     def __repr__
     def __str__
     def __unicode__
+    @staticmethod
 show_missing = True
 
 [html]

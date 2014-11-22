@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}All the links - by user: {{user.username}}{% endblock title %}
+
+{% block page_title %}All the links - by user: {{user.username}} {% endblock page_title %}
+
+{% block content %}
+
+
+
+<div class="endless_page_template">
+    {% include page_template  %}
+</div>
+{% endblock content %}
+
+
+{% block extra_js %}  
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+    <script>$.endlessPaginate();</script>
+{% endblock extra_js %}

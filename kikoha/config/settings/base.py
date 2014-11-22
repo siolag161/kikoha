@@ -31,6 +31,15 @@ PROJECT_DOMAIN = '%s.com' % PROJECT_NAME.lower()
 # Add our project to our pythonpath, this way we don't need to type our project
 # name in our dotted import paths:
 path.append(CONFIG_ROOT)
+
+#sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
+#print PROJECT_ROOT
+#    normpath(join(PROJECT_ROOT, 'fixtures')),
+
+APPS_PATH = join(PROJECT_ROOT, 'apps')
+# import sys
+path.insert(0, normpath(APPS_PATH) )
+
 ########## END PATH CONFIGURATION
 
 
@@ -75,11 +84,15 @@ THIRD_PARTY_APPS = (
     'allauth',  # registration
     'allauth.account',  # registration
     'pipeline',
+    'django_filters',
+    'endless_pagination', 
     #'relationships',
 )
 
 PROJECT_APPS = (
+    'core',
     'accounts',
+    'links',
 )
 
 EXTENSION_APPS = (
@@ -385,3 +398,8 @@ LOGGING = {
     }
 }
 ########## END LOGGING CONFIGURATION
+
+
+########## BEGIN CRISPY FORM CONFIGURATION #########
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+########## END CRISPY FORM CONFIGURATION #########

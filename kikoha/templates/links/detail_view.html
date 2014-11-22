@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ block.super }}{% endblock title %}
+
+{% block content %}
+
+title: {{link.title}} <br/>
+url: {{link.url}} <br/>
+{% endblock content %}

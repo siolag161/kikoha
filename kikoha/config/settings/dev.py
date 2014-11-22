@@ -27,7 +27,6 @@ TEMPLATE_DEBUG = DEBUG
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ########## END EMAIL CONFIGURATION
 
-
 ########## CACHE CONFIGURATION
 # https://docs.djangoproject.com/en/dev/ref/settings/#caches
 CACHE_ENGINES = {
@@ -118,7 +117,7 @@ INSTALLED_APPS += (
 try:
     from .local import *
 except ImportError:
-    print 'aaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    print 'aa'
 
 INSTALLED_APPS += (
     'django_nose',
@@ -130,6 +129,6 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-html',
-    '--cover-package=accounts',
+    '--cover-package=accounts,core',
     
 ]
