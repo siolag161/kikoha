@@ -1,10 +1,30 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{{ community.title }}{% endblock title %}
+{% block title %}{{ community.name }}{% endblock title %}
+{% block page_title %}{{ community.name }}{% endblock page_title %}
 
 {% block content %}
+<div class="container">
+<div class="row">
+  <div class="col-sm-12 ">
+    <a class="btn btn-primary" href="{% url "community:link_create" name=community.name  %}">Create Link</a>
+  </div>
+    
+  <div class="col-sm-12 ">
+      
+      <ul>
+          {% if community.links.all %}
+          {% for link in community.links.all %}
+        <li>         
+          <a href="{{link.url}}">{{link.title}}</a>
+        </li>
+          {% endfor %}
+          {% endif %}
+      </ul>  
 
-title: {{community.title}} <br/>
-url: {{community.url}} <br/>
+  </div>
+    
+</div>
+</div>
 {% endblock content %}

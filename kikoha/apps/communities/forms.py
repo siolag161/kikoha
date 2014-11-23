@@ -16,8 +16,7 @@ class CommunityCreateForm(BaseForm):
     """@todo: refactor this"""
     def clean(self):
 	cleaned_data = super(BaseForm, self).clean()
-	name = cleaned_data['title']
-	
+	name = cleaned_data['title']	
 	if not re.match(r'[A-z0-9]+$', name):
             raise ValidationError('AlphaNumeric characters only, son!')
 	    

@@ -25,6 +25,14 @@ class CommunityByNameDetailView(DetailView):
     context_object_name = 'community'
     template_name = "communities/detail_view.html"
 
+    #def get_context_data(self, **kwargs):
+        #ctx = super(CommunityByNameDetailView, self).get_context_data(**kwargs)
+
+	#ctx['link_list'] = 
+	
+        #return ctx
+
+
     def get_object(self):
 	Model = self.model
 	ComminityModel = get_user_model()
@@ -34,7 +42,15 @@ class CommunityByNameDetailView(DetailView):
 	    community = Model.objects.get(title=comm_name)
 	return community
 
-    
+"""
+All links, twitter style
+"""
+class CommunityListView(AjaxListView):
+    model = Community
+    context_object_name = 'community_list'
+    template_name = 'communities/list_view.html'
+    page_template = 'communities/list_page_view.html'
+        
     
 #########################################################################
 """
@@ -44,11 +60,19 @@ class LinkCreateView(OwnedCreateView, LoginRequiredMixin):
     template_name = "links/create_view.html"
     form_class = LinkCreateForm
 
-    #def form_valid(self, form):
-	#link = form.save(commit=False)
-        #link.author = self.request.user
-	#link.save()
-        #return super(LinkCreateView, self).form_valid(form)
+    def get_context_data(self, **kwargs):
+        ctx = super(OwnedCreateView, self).get_context_data(**kwargs)
+        ctx['name'] = self.kwargs.get('name')
+        return ctx
+
+    def form_valid(self, form):
+	link = form.save(commit=False)
+        link.author = self.request.user
+	comm_name = self.kwargs.get('name')
+	community = Community.objects.get(title=comm_name)	
+	link.community = community	
+	link.save()
+        return super(LinkCreateView, self).form_valid(form)
 """
 """
 class LinkDetailView(DetailView):
@@ -69,11 +93,10 @@ class LinkListView(AjaxListView):
     model = Link
     context_object_name = 'link_list'
     template_name = 'links/list_view.html'
-    page_template = 'links/list_page_view.html'
-    
+    page_template = 'links/list_page_view.html'    
 
 """
-All links, twitter style
+Links by authors, twitter style
 """
 class LinkAuthorListView(AjaxListView):
     model = Link

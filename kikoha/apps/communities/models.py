@@ -27,11 +27,11 @@ class Community(BasePostModel):
 """
 class Link(BasePostModel):
     url = URLField(null=False)
-    community = ForeignKey(Community, verbose_name=_("Community"), related_name='communites')
+    community = ForeignKey(Community, verbose_name=_("Community"), related_name='links')
 
     @permalink
     def get_absolute_url(self):
-	return 'comm:detail_slug', (), {'pk': self.id, 'uslug': self.slug}
+	return 'community:link_detail', (), {'name': self.community.name, 'pk': self.id, 'uslug': self.slug}
     
     def save(self, *args, **kwargs):
 	super(Link,self).save(*args,**kwargs)

@@ -27,6 +27,8 @@
           <a class="navbar-brand" href="/">kikoha</a>
           <ul class="nav navbar-nav">
             <li class="active"><a href="{% url 'core:home' %}">Home</a></li>
+           <li class="active"><a href="{% url 'community:community_list' %}">Communities</a></li>
+
             {% if request.user.is_authenticated %}
            <li><a href="{% url 'community:community_create' %}">{% trans "Post link" %}</a></li>
             <li><a href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a></li>
