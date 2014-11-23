@@ -1,0 +1,12 @@
+{% load endless %}
+
+{% lazy_paginate 2,2 link_list %}
+
+    {% for community in community_list %}
+    {{link.title}} <br/>
+    {% endfor %}
+
+<div class="pagination">
+{% show_more %}
+
+</div>

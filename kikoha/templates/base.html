@@ -28,7 +28,7 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="{% url 'core:home' %}">Home</a></li>
             {% if request.user.is_authenticated %}
-           <li><a href="{% url 'links:create' %}">{% trans "Post link" %}</a></li>
+           <li><a href="{% url 'community:community_create' %}">{% trans "Post link" %}</a></li>
             <li><a href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a></li>
             <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
             {% else %}

@@ -92,7 +92,7 @@ THIRD_PARTY_APPS = (
 PROJECT_APPS = (
     'core',
     'accounts',
-    'links',
+    'communities',
 )
 
 EXTENSION_APPS = (

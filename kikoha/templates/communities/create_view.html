@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}Submit new link{% endblock title %}
+{% block title %}Submit community{% endblock title %}
 
-{% block page_title %}Submit new link{% endblock page_title %}
+{% block page_title %}Submit new community{% endblock page_title %}
 
 {% block content %}
 <div class="container">
     <div class="col-xs-6 col-xs-offset-3">
-    <form action="{% url "community:link_create" %}" method="POST" class="form-horizontal" role="form">
+    <form action="{% url "community:community_create" %}" method="POST" class="form-horizontal" role="form">
       {% csrf_token %}
       {% load crispy_forms_tags %}
       {% crispy form %}

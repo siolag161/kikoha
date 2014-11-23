@@ -28,7 +28,8 @@ admin.site.site_header = '%s Headquarters' % settings.PROJECT_NAME
 admin.site.index_title = 'Base of Operations'
 
 urlpatterns += [
-    url(r'^links/', include("links.urls", namespace="links") )
+    #url(r'^l/', include("links.urls", namespace="links") ),
+    url(r'^c/', include("communities.urls", namespace="community") ),
 ]
 
 if settings.DEBUG:

@@ -6,19 +6,14 @@ from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, S
 from crispy_forms.helper import FormHelper
 #from crispy_forms.bootstrap import FormAction
 
-from core.mixins import NoFormTagCrispyFormMixin
-
-from .models import Link
+from .mixins import NoFormTagCrispyFormMixin
 
 """
 """
-class LinkCreateForm(ModelForm, NoFormTagCrispyFormMixin):
+class BaseForm(ModelForm, NoFormTagCrispyFormMixin):    
     helper = FormHelper()
     helper.form_class = 'form-horizontal'
     helper.label_class = 'col-xs-2'
     helper.field_class = 'col-xs-8'
     helper.add_input(Submit('submit', 'submit'))
 
-    class Meta:
-	model = Link
-	fields = ('title', 'url')

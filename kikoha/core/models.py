@@ -32,9 +32,7 @@ class SluggedModel(models.Model):
     An abstract class for class with a slug
     """
     title = models.CharField(_('Title'), max_length=255)
-    #slug = models.SlugField(_('Slug'), null=True, blank=True)
-    slug = CoreSlugField(_('Slug'), source_from = "title", null=True, blank=True)
-    
+    slug = CoreSlugField(_('Slug'), source_from = "title", null=True, blank=True)    
     class Meta:
 	abstract = True
 	
