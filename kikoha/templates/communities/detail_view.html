@@ -9,22 +9,22 @@
 <div class="row">
   <div class="col-sm-12 ">
     <a class="btn btn-primary" href="{% url "community:link_create" name=community.name  %}">Create Link</a>
-  </div>
-    
-  <div class="col-sm-12 ">
-      
-      <ul>
-          {% if community.links.all %}
-          {% for link in community.links.all %}
-        <li>         
-          <a href="{{link.url}}">{{link.title}}</a>
-        </li>
-          {% endfor %}
-          {% endif %}
-      </ul>  
+  </div>    
+</div>
+</div>
 
+<div class="container">
+<div class="row">
+  <div class="col-sm-12 ">      
+      <ul> {% include page_template  %}
+</ul>
   </div>
-    
 </div>
 </div>
+
+
 {% endblock content %}
+{% block extra_js %}  
+    {{ block.super }}
+    {% include "includes/endless_js.html" %}
+{% endblock extra_js %}

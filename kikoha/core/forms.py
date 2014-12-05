@@ -10,7 +10,7 @@ from .mixins import NoFormTagCrispyFormMixin
 
 """
 """
-class BaseForm(ModelForm, NoFormTagCrispyFormMixin):    
+class BaseForm(NoFormTagCrispyFormMixin,ModelForm):    
     helper = FormHelper()
     helper.form_class = 'form-horizontal'
     helper.label_class = 'col-xs-2'

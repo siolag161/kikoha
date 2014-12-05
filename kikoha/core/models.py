@@ -11,13 +11,27 @@ from model_utils.fields import AutoLastModifiedField
 from core import tools
 from .fields import CoreSlugField, AutoCreatedField
 
+
 user_model_label = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 try:
     from django.contrib.auth import get_user_model
 except ImportError:
     from django.contrib.auth.models import User
     get_user_model = lambda: User
-    
+
+class VotedModel(models.Model):
+    upvotes = models.PositiveIntegerField(default=1)
+    downvotes = models.IntegerField(default=0)
+    class Meta:
+        abstract = True
+
+class ScoredModel(models.Model):
+    """
+    Index this one
+    """
+    score = models.FloatField(default=0.0)
+    class Meta:
+        abstract = True
 
 class OwnedModel(models.Model): 
     """
@@ -53,8 +67,7 @@ class TimeFramedModel(models.Model):
 class BasePostModel(OwnedModel, SluggedModel, TimeStampedModel, TimeFramedModel):
     """
     Base abstract model for a Post
-    """
-    
+    """    
     class Meta:
 	abstract = True
 

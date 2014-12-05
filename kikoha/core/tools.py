@@ -1,5 +1,4 @@
 
-
 def slugify(input, trans = None, obj = None, with_attr = None):
     from unidecode import unidecode
     from django.template import defaultfilters
@@ -20,6 +19,8 @@ def get_sourced_value(att, instance):
 def crop_string(val, max_len):
     """ always ensures the len of val < max_len"""
     return val[:max_len]
+
+    
 	
     
 def microsecs_since_midnight(date):

@@ -22,15 +22,23 @@ urlpatterns = [
     url(r'^admin/rq/scheduler/', include('extensions.rq_scheduler.urls', namespace='rq_scheduler')),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
 ]
 
 admin.site.site_header = '%s Headquarters' % settings.PROJECT_NAME
 admin.site.index_title = 'Base of Operations'
 
 urlpatterns += [
-    #url(r'^l/', include("links.urls", namespace="links") ),
     url(r'^c/', include("communities.urls", namespace="community") ),
+    #url(r'^c/', include("threaded_comments.urls", namespace="comments") ),
+    # url(r'^cr/(\d+)/(.+)/$', 'django.contrib.contenttypes.views.shortcut', name='comments-url-redirect'),
+    #url(r'^comments/', include("threaded_comments.urls", namespace="comments") ),
+
+    url(r'^comments/', include('threaded_comments.urls', namespace="comments")),
+    url(r'^comments/', include('django.contrib.comments.urls')),
+
 ]
+
 
 if settings.DEBUG:
     urlpatterns += [

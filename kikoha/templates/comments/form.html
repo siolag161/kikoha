@@ -1,0 +1,8 @@
+{% load comments %}
+<form id="postcomment" method="post"
+     action = action="{% comment_form_target %}" 
+     class = "comment-form" ajax_action="{% url 'comments:post-comment-ajax' %}">
+    {% load crispy_forms_tags %}
+    {% crispy form %} 
+</form>
+

@@ -1,7 +1,7 @@
 from django.conf.urls import url, include, patterns
 
 from .views import LinkDetailView, LinkCreateView, LinkUpdateView, LinkListView, LinkAuthorListView, \
-    CommunityCreateView, CommunityByNameDetailView, CommunityListView
+    CommunityCreateView, CommunityListView, community_detail
 
 urlpatterns = patterns( 
     "",
@@ -20,9 +20,11 @@ urlpatterns += patterns(
     "",
     url(r'^/?$', CommunityListView.as_view(), name="community_list"),
     url(r'^~create/?$', CommunityCreateView.as_view(), name="community_create"),
-    url(r'^(?P<name>[-\w]+)/?$', CommunityByNameDetailView.as_view(), name="community_detail"),
+    url(r'^(?P<name>[-\w]+)/?$', community_detail, name="community_detail"),
     url(r'^(?P<name>[-\w]+)/~create/?$', LinkCreateView.as_view(), name="link_create"),
-    url(r'^(?P<name>[-\w]+)/(?P<pk>\d+)/(?P<uslug>[-\w]+)/?', LinkDetailView.as_view(), name="link_detail"),
-		
+
+    url(r'^(?P<pk>\d+)/?$', LinkDetailView.as_view(), name="link_detail"),
+    url(r'^(?P<pk>\d+)/(?P<uslug>[-\w]+)/?$', LinkDetailView.as_view(), name="link_detail_slug"),
+
 )
 

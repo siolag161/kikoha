@@ -1,0 +1,22 @@
+{% load i18n %}
+{% load core_extras %}
+    <div class="comment">    
+    <div class="comment_summary">    
+    </div>
+    <div class="comment_header">
+        <span class="poster">            
+        {% if comment.user %} 
+         <a href="{% url 'users:detail' comment.user.username %}" class="authen_poster">{{comment.user.username}}</a>
+        {% else %}
+         <a href="#" class="anom_poster">Anonymous</a>
+        {% endif %}
+        </span>
+        <span class="posted_date"> - {{comment.submit_date|age}}</span>
+    </div>
+    <div class="comment_content">
+        <p>
+        {{comment.comment}} 
+        </p>
+    </div>   
+    <div><a href="" class="reply">reply</a></div>
+    </div>

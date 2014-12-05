@@ -1,0 +1,18 @@
+<ul id="start-comments">
+  {% if comment_list %}
+  {% for comment, info in comment_list %}   
+    {% if info.open %}
+      <div class="children">
+      <ul class="comments"><li id="comment-{{comment.id}}" style="">
+    {% else %}
+      </li><li id="comment-{{comment.id}}" style="">
+    {% endif %}
+      {% include "comments/comment.html" %}
+      {% for close in info.close %}
+        </li></ul></div>
+      {% endfor %}
+   {% endfor %}
+   {% else %}
+      
+   {% endif %}
+</ul>

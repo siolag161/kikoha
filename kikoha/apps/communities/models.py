@@ -1,7 +1,7 @@
 from django.db.models import URLField, permalink, CharField, SlugField, ForeignKey
 from django.utils.translation import ugettext_lazy as _
 
-from core.models import BasePostModel
+from core.models import BasePostModel, ScoredModel, VotedModel
 
 
 ################################## CONCRETE CLASESSES #########################################
@@ -25,7 +25,7 @@ class Community(BasePostModel):
  
 """
 """
-class Link(BasePostModel):
+class Link(BasePostModel, ScoredModel, VotedModel):
     url = URLField(null=False)
     community = ForeignKey(Community, verbose_name=_("Community"), related_name='links')
 

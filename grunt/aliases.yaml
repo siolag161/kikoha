@@ -44,8 +44,7 @@ build:
 heroku:
   - 'build'
 
-dev:
-  - 'lint'
+dev:  
   - 'build'
   - 'notify:compile'
   - 'watch'

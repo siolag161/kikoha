@@ -1,0 +1,9 @@
+{% load endless %}
+
+{% lazy_paginate 2,2 link_list %}
+      {% for link in link_list %}
+       <li>
+           <a href="{link.url}}">{{link.title}} </a> | <a href="{% url 'community:link_detail_slug' link.id link.slug %}">Comments </a>
+    </li> 
+    {% endfor %}
+{% show_more %}

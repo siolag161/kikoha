@@ -7,11 +7,12 @@
     cssDest:  '<%= paths.css %>/lib/vendors.css'
     dependencies:  
       'bootstrap': 'jquery'
-      'underscore': 'jquery'
+      'underscore': 'jquery'	
     exclude: [
-      'jasmine'
+      'jasmine' 
       'jasmine-ajax'
-      'jasmine-jquery']
+      'jasmine-jquery'
+     ]
   test: 
     dest: '<%= paths.js %>/tests/lib/vendors_test.js'
     include: [

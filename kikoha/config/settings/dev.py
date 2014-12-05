@@ -119,16 +119,20 @@ try:
 except ImportError:
     print 'aa'
 
+##### TESTING SUITE ####
 INSTALLED_APPS += (
     'django_nose',
 )
 
-
-##### TESTING SUITE ####
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-html',
-    '--cover-package=accounts,core',
-    
-]
+    '--cover-package=accounts,core,threaded_comments',
+    ]
+
+
+INSTALLED_APPS += (
+    'dummy',
+)
+#########

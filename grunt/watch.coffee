@@ -26,7 +26,6 @@ module.exports =
   stylesheets:
     files: ['<%= paths.css %>/scss/*.scss']
     tasks: [
-      'newer:scsslint'
       'newer:sass'
       'newer:autoprefixer'
       'replace:stylesheets'

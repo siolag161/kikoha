@@ -93,12 +93,16 @@ PROJECT_APPS = (
     'core',
     'accounts',
     'communities',
+    'threaded_comments',
+    'django.contrib.comments',
+
 )
 
 EXTENSION_APPS = (
     'extensions.django_rq',
     'extensions.rq_scheduler',
     'extensions.sites',
+    'extensions.treebeard'
 )
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -249,12 +253,13 @@ PIPELINE_CSS = {
     },
 }
 
-PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
-
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
+PIPELINE_CSSMIN_BINARY = '/usr/bin/ cssmin'
 PIPELINE_JS = {
     'master': {
         'source_filenames': (
             'js/lib/*.js',
+	    'js/extras/*.js',
             'js/build/*.js',
         ),
         'output_filename': 'js/master.js',
@@ -264,7 +269,7 @@ PIPELINE_JS = {
     }
 }
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.uglifyjs.UglifyJSCompressor'
-PIPELINE_UGLIFYJS_BINARY = '/usr/bin/env uglifyjs'
+PIPELINE_UGLIFYJS_BINARY = '/usr/bin/ uglifyjs'
 PIPELINE_UGLIFYJS_ARGUMENTS = ''
 
 ########## END PIPELINE CONFIGURATION
@@ -397,9 +402,12 @@ LOGGING = {
         },
     }
 }
-########## END LOGGING CONFIGURATION
+########## END LOGGING CONFIGURATION 
 
 
 ########## BEGIN CRISPY FORM CONFIGURATION #########
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 ########## END CRISPY FORM CONFIGURATION #########
+
+########## BEGIN COMMENTS CONFIGURATION #########
+COMMENTS_APP = 'threaded_comments'
