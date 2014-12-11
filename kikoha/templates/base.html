@@ -55,29 +55,27 @@
         </div>
     </header>
 
-    <div class="navbar">
+    <nav id="nav" role="navigation">
       {% block header %}
 	<div class="container">
-          <a class="navbar-brand" href="/">kikoha</a>
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="{% url 'core:home' %}">Home</a></li>
-           <li class="active"><a href="{% url 'community:community_list' %}">Communities</a></li>
-
-            {% if request.user.is_authenticated %}
-           <li><a href="{% url 'community:community_create' %}">{% trans "Post link" %}</a></li>
-            <li><a href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a></li>
-            <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
-            {% else %}
-            <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
-            <li><a href="{% url 'account_login' %}">{% trans "Log In" %}</a></li>
-            {% endif %}
-          </ul>
+          <ul class="nav nav-pills">
+	    <li role="presentation" class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+		{%block header_title %} Communities {% endblock %} <span class="caret"></span></a>
+	      <ul class="dropdown-menu" role="menu">
+		<li class="community-item"><a href="#">Action</a></li>
+		<li class="community-item"><a href="#">Another action</a></li>
+	      </ul>
+	    </li>
+	    <li role="presentation" class="active"><a href="#">Top</a></li>
+	    <li role="presentation"><a href="#">Hot</a></li>
+	  </ul>
 	</div>
       {% endblock header %}
-    </div>
+    </nav>
 
     <div class="container">
-      <h1>{% block page_title %}KTK{% endblock page_title %}</h1>
+      <h1>{% block page_title %}{% endblock page_title %}</h1>
     
       {% block messages %}
         {% include 'includes/messages.html' %}

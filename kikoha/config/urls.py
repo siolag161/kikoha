@@ -1,10 +1,12 @@
 from django.conf.urls import url, include
 from django.conf import settings
 from django.contrib import admin
-
 from django.views.generic.base import RedirectView, TemplateView
 
-urlpatterns = [
+from communities.views import CommunityListView
+urlpatterns = [ 
+
+    url(r'^/?$', CommunityListView.as_view(), name="home"), 
     # Core
     url(r'^', include('core.urls', namespace='core')),
 

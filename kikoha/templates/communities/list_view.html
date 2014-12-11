@@ -2,14 +2,27 @@
 {% load i18n %}
 {% block title %}All communities{% endblock title %}
 
-{% block page_title %}All communities{% endblock page_title %}
+{% block header %}
+<div class="container">
+  <ul class="nav nav-pills">
+    <li role="presentation" class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+	Communities <span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+	{% include page_template  %}
+      </ul>
+    </li>
+    <li role="presentation" class="active"><a href="#">Top</a></li>
+    <li role="presentation"><a href="#">Hot</a></li>
+  </ul>
+</div>
+{% endblock header %}
 
 {% block content %}
 <div class="endless_page_template">
-    {% include page_template  %}
+   
 </div>
 {% endblock content %}
-
 
 {% block extra_js %}  
     {{ block.super }}

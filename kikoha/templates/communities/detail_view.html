@@ -2,7 +2,8 @@
 {% load i18n %}
 
 {% block title %}{{ community.name }}{% endblock title %}
-{% block page_title %}{{ community.name }}{% endblock page_title %}
+
+{%block header_title %} {{ community.name }} {% endblock %}
 
 {% block content %}
 <div class="container">

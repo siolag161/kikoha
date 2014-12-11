@@ -1,13 +1,13 @@
 {% load endless %}
 
 {% lazy_paginate 2,2 community_list %}
-<div class="container">
-    <ul>
-    {% for community in community_list %}
-       <li><a href="{% url "community:community_detail" name=community.name  %}"> {{community.name}} </a></li> 
-    {% endfor %}
-    </ul>
-</div>
-<div class="pagination">
-{% show_more %}
-</div>
+{% for community in community_list %}
+<li class="community-item">
+  <a href="{% url "community:community_detail" name=community.name  %}">
+    {{community.name}}
+  </a>
+</li>
+{% endfor %}
+ {% show_more %}
+
+

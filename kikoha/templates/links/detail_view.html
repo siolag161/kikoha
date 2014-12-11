@@ -2,15 +2,26 @@
 {% load i18n %}
 {% load threadedcomments %}
 
-{% block title %}{{ block.super }}{% endblock title %}
-
+{% block title %}{{link.title}}{% endblock title %}
 
 {% block content %}
-title: {{link.title}} <br/>
-url: {{link.url}} <br/>
-    {% render_comment_form for link %}
-    <div class="container comment-section" id="comments_link{{link.id}}" >
-        {% render_comment_list for link %}
-    </div>
+<div class="container">
+  <div class="voting_info">    
+  </div>
+  <div class="thumbnail">
+  </div>
+  <div class="link_info">
+    <p class="title">
+    </p>
+    <p class="tagline">
+    </p>
+    <ul class="">
+    </ul>
+  </div>
+</div>
+{% render_comment_form for link %} 
+<div class="container comment-section" id="comments_link{{link.id}}" >
+   {% render_comment_list for link %}
+</div>
     
 {% endblock content %}
