@@ -135,8 +135,8 @@ def xmlhttprequest_vote_on_object(request, model, direction,
         success
             ``true`` if the vote was successfully processed, ``false``
             otherwise.
-        score
-            The object's updated score and number of votes if the vote
+        point
+            The object's updated point and number of votes if the vote
             was successfully processed.
         error_message
             Contains an error message if the vote was not successfully
@@ -174,5 +174,5 @@ def xmlhttprequest_vote_on_object(request, model, direction,
     Vote.objects.record_vote(obj, request.user, vote)
     return HttpResponse(simplejson.dumps({
 	'success': True,
-	'score': Vote.objects.get_score(obj),
+	'point': Vote.objects.get_point(obj),
     }))

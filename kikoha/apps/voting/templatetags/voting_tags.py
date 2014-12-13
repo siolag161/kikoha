@@ -12,7 +12,7 @@ register = template.Library()
 # Tags
 
 
-class ScoreForObjectNode(template.Node):
+class PointForObjectNode(template.Node):
     def __init__(self, object, context_var):
 	self.object = object
 	self.context_var = context_var
@@ -22,11 +22,11 @@ class ScoreForObjectNode(template.Node):
 	    object = template.resolve_variable(self.object, context)
 	except template.VariableDoesNotExist:
 	    return ''
-	    context[self.context_var] = Vote.objects.get_score(object)
+	    context[self.context_var] = Vote.objects.get_point(object)
 	    return ''
 
 
-class ScoresForObjectsNode(template.Node):
+class PointsForObjectsNode(template.Node):
     def __init__(self, objects, context_var):
 	self.objects = objects
 	self.context_var = context_var
@@ -36,7 +36,7 @@ class ScoresForObjectsNode(template.Node):
 	    objects = template.resolve_variable(self.objects, context)
 	except template.VariableDoesNotExist:
 	    return ''
-	    context[self.context_var] = Vote.objects.get_scores_in_bulk(objects)
+	    context[self.context_var] = Vote.objects.get_points_in_bulk(objects)
 	    return ''
 
 
@@ -88,42 +88,42 @@ class DictEntryForItemNode(template.Node):
 	    return ''
 
 
-def do_score_for_object(parser, token):
+def do_point_for_object(parser, token):
     """
-    Retrieves the total score for an object and the number of votes
+    Retrieves the total point for an object and the number of votes
     it's received and stores them in a context variable which has
-    ``score`` and ``num_votes`` properties.
+    ``point`` and ``num_votes`` properties.
 
     Example usage::
 
-        {% score_for_object widget as score %}
+        {% point_for_object widget as point %}
 
-        {{ score.score }}point{{ score.score|pluralize }}
-        after {{ score.num_votes }} vote{{ score.num_votes|pluralize }}
+        {{ point.point }}point{{ point.point|pluralize }}
+        after {{ point.num_votes }} vote{{ point.num_votes|pluralize }}
     """
     bits = token.contents.split()
     if len(bits) != 4:
 	raise template.TemplateSyntaxError("'%s' tag takes exactly three arguments" % bits[0])
 	if bits[2] != 'as':
 	    raise template.TemplateSyntaxError("second argument to '%s' tag must be 'as'" % bits[0])
-	    return ScoreForObjectNode(bits[1], bits[3])
+	    return PointForObjectNode(bits[1], bits[3])
 
 
-def do_scores_for_objects(parser, token):
+def do_points_for_objects(parser, token):
     """
-    Retrieves the total scores for a list of objects and the number of
+    Retrieves the total points for a list of objects and the number of
     votes they have received and stores them in a context variable.
 
     Example usage::
 
-        {% scores_for_objects widget_list as score_dict %}
+        {% points_for_objects widget_list as point_dict %}
     """
     bits = token.contents.split()
     if len(bits) != 4:
 	raise template.TemplateSyntaxError("'%s' tag takes exactly three arguments" % bits[0])
 	if bits[2] != 'as':
 	    raise template.TemplateSyntaxError("second argument to '%s' tag must be 'as'" % bits[0])
-	    return ScoresForObjectsNode(bits[1], bits[3])
+	    return PointsForObjectsNode(bits[1], bits[3])
 
 
 def do_vote_by_user(parser, token):
@@ -169,7 +169,7 @@ def do_votes_by_user(parser, token):
 def do_dict_entry_for_item(parser, token):
     """
     Given an object and a dictionary keyed with object ids - as
-    returned by the ``votes_by_user`` and ``scores_for_objects``
+    returned by the ``votes_by_user`` and ``points_for_objects``
     template tags - retrieves the value for the given object and
     stores it in a context variable, storing ``None`` if no value
     exists for the given object.
@@ -187,8 +187,8 @@ def do_dict_entry_for_item(parser, token):
 		raise template.TemplateSyntaxError("fourth argument to '%s' tag must be 'as'" % bits[0])
 		return DictEntryForItemNode(bits[1], bits[3], bits[5])
 
-register.tag('score_for_object', do_score_for_object)
-register.tag('scores_for_objects', do_scores_for_objects)
+register.tag('point_for_object', do_point_for_object)
+register.tag('points_for_objects', do_points_for_objects)
 register.tag('vote_by_user', do_vote_by_user)
 register.tag('votes_by_user', do_votes_by_user)
 register.tag('dict_entry_for_item', do_dict_entry_for_item)

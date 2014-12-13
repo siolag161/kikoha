@@ -5,30 +5,49 @@ from django.db import models
 from django.db.models import Sum, Count
 from django.contrib.contenttypes.models import ContentType
 
+from signals import vote_recorded
+
+import logging
+logger = logging.getLogger("werkzeug")
+
 ZERO_VOTES_ALLOWED = getattr(settings, 'VOTING_ZERO_VOTES_ALLOWED', False)
 
+### todo:
+"""
+1. change score -> point (x)
+2. cache the voting info in the object in-self
+2.bis. update the model once finished
+3. django signals
+4. async task for updating the score
+"""
 class VoteManager(models.Manager):
-    def get_score(self, obj):
+    def get_point(self, obj):
         """
-        Get a dictionary containing the total score for ``obj`` and
+        Get a dictionary containing the total point for ``obj`` and
         the number of votes it's received.
         """
-        ctype = ContentType.objects.get_for_model(obj)
-        result = self.filter(
-            object_id=obj._get_pk_val(),
-            content_type=ctype
-        ).aggregate(
-            score=Sum('vote'),
-            num_votes=Count('vote')
-        )
+	result = {}
 
-        if result['score'] is None:
-            result['score'] = 0
+	get_obj_point = getattr(obj, 'get_point', None)
+	if callable(get_obj_point):	
+	    result = get_obj_point()
+	else:
+	    ctype = ContentType.objects.get_for_model(obj)
+	    result = self.filter(
+		object_id=obj._get_pk_val(),
+		content_type=ctype
+	    ).aggregate(
+		point=Sum('vote'),
+		num_votes=Count('vote')
+	    )
+
+	    if result['point'] is None:
+		result['point'] = 0
         return result
 
-    def get_scores_in_bulk(self, objects):
+    def get_points_in_bulk(self, objects):
         """
-        Get a dictionary mapping object ids to total score and number
+        Get a dictionary mapping object ids to total point and number
         of votes for each object.
         """
         object_ids = [o._get_pk_val() for o in objects]
@@ -43,14 +62,14 @@ class VoteManager(models.Manager):
         ).values(
             'object_id',
         ).annotate(
-            score=Sum('vote'), 
+            point=Sum('vote'), 
             num_votes=Count('vote')
         )
 
         vote_dict = {}
         for row in queryset:
             vote_dict[row['object_id']] = {
-                'score': int(row['score']),
+                'point': int(row['point']),
                 'num_votes': int(row['num_votes']),
             }
 
@@ -68,46 +87,59 @@ class VoteManager(models.Manager):
         try:
             v = self.get(author=user, content_type=ctype,
                          object_id=obj._get_pk_val())
+	    
             if vote == 0 and not ZERO_VOTES_ALLOWED:
+		# vote = v.vote
                 v.delete()
+		update_type = 'CLEARED'
             else:
-                v.vote = vote
+		v.vote = vote
                 v.save()
-        except models.ObjectDoesNotExist:
+		update_type = 'ADDED'
+	    vote_recorded.send( sender=v.__class__, object = obj, vote=v, update_type=update_type )
+	   
+        except models.ObjectDoesNotExist:	    
             if not ZERO_VOTES_ALLOWED and vote == 0:
                 return
-            self.create(author=user, content_type=ctype,
+            v = self.create(author=user, content_type=ctype,
                         object_id=obj._get_pk_val(), vote=vote)
+	    update_type = 'CREATED'
+	    # logger.info('created - sent by: %s - %s - %s' % (v, obj, update_type))
+	    vote_recorded.send( sender=v.__class__, object = obj, vote=v, update_type=update_type )
+
+	    # vote_recorded.send( sender=v, object=obj,
+	    # 		                update_type=update_type )
+
 
     def get_top(self, model, limit=10, reversed=False):
         """
-        Get the top N scored objects for a given model.
-        Yields (object, score) tuples.
+        Get the top N pointd objects for a given model.
+        Yields (object, point) tuples.
         """
         ctype = ContentType.objects.get_for_model(model)
-        results = self.filter(content_type=ctype).values('object_id').annotate(score=Sum('vote'))
+        results = self.filter(content_type=ctype).values('object_id').annotate(point=Sum('vote'))
         if reversed:
-            results = results.order_by('score')
+            results = results.order_by('point')
         else:
-            results = results.order_by('-score')
+            results = results.order_by('-point')
 
         # Use in_bulk() to avoid O(limit) db hits.
         objects = model.objects.in_bulk([item['object_id'] for item in results[:limit]])
 
-        # Yield each object, score pair. Because of the lazy nature of generic
+        # Yield each object, point pair. Because of the lazy nature of generic
         # relations, missing objects are silently ignored.
         for item in results[:limit]:
-            id, score = item['object_id'], item['score']
-            if not score:
+            id, point = item['object_id'], item['point']
+            if not point:
                 continue
             if id in objects:
-                yield objects[id], int(score)
+                yield objects[id], int(point)
 
     def get_bottom(self, Model, limit=10):
         """
-        Get the bottom (i.e. most negative) N scored objects for a given
+        Get the bottom (i.e. most negative) N pointd objects for a given
         model.
-        Yields (object, score) tuples.
+        Yields (object, point) tuples.
         """
         return self.get_top(Model, limit, True)
 
