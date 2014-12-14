@@ -1,14 +1,24 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load threadedcomments %}
-
-{% block title %}{{link.title}}{% endblock title %}
+ 
+{% block title %}{{link.title}}{% endblock title %} 
 
 {% block content %}
 <div class="container">
-  <div class="voting_info">    
+  <div class="voting_info midcol unvoted link">
+    <div class="arrow up login-required">
+    </div>
+    <div class="score downvotes">3698
+    </div>
+    <div class="score unvoted">3698
+    </div>
+    <div class="score upvotes">3698
+    </div>
+    <div class="arrow down login-required">
+    </div>
   </div>
-  <div class="thumbnail">
+  <div class="thumbnailed">
   </div>
   <div class="link_info">
     <p class="title">

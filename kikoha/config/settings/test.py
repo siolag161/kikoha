@@ -23,12 +23,12 @@ NOSE_ARGS = [
 ########## IN-MEMORY TEST DATABASE
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': join(PROJECT_ROOT, 'test.sqlite3'),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+	'ENGINE': 'django.db.backends.sqlite3',
+	'NAME': join(PROJECT_ROOT, 'test.sqlite3'),
+	'USER': '',
+	'PASSWORD': '',
+	'HOST': '',
+	'PORT': '',
     },
 }
 
@@ -48,8 +48,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 # https://docs.djangoproject.com/en/dev/ref/settings/#caches
 CACHES = {
     'default': {
-        'BACKEND': 'redis_cache.cache.RedisCache',
-        'LOCATION': 'localhost:6379:0',
+	'BACKEND': 'redis_cache.cache.RedisCache',
+	'LOCATION': 'localhost:6379:0',
     }
 }
 ########## END CACHE CONFIGURATION
@@ -59,16 +59,16 @@ CACHES = {
 # https://github.com/ui/django-rq#support-for-django-redis-and-django-redis-cache
 RQ_QUEUES = {
     'default': {
-        'USE_REDIS_CACHE': 'default',
-        'ASYNC': False
+	'USE_REDIS_CACHE': 'default',
+	'ASYNC': False
     },
     'high': {
-        'USE_REDIS_CACHE': 'default',
-        'ASYNC': False
+	'USE_REDIS_CACHE': 'default',
+	'ASYNC': False
     },
     'low': {
-        'USE_REDIS_CACHE': 'default',
-        'ASYNC': False
+	'USE_REDIS_CACHE': 'default',
+	'ASYNC': False
     }
 }
 
@@ -81,15 +81,15 @@ RQ_SHOW_ADMIN_LINK = True
 LOGGERS = {
     # Log queue workers to null but file while testing
     'rq.worker': {
-        'handlers': ['null', 'file_log'],
-        'level': 'INFO',
-        'propagate': False,
+	'handlers': ['null', 'file_log'],
+	'level': 'INFO',
+	'propagate': False,
     },
     # Log nose test runner only INFO level and above
     'nose.plugins.manager': {
-        'handlers': ['default', 'file_log'],
-        'level': 'INFO',
-        'propagate': False,
+	'handlers': ['default', 'file_log'],
+	'level': 'INFO',
+	'propagate': False,
     },
 }
 

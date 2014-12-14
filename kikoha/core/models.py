@@ -19,12 +19,6 @@ except ImportError:
     from django.contrib.auth.models import User
     get_user_model = lambda: User
 
-class VotedModel(models.Model):
-    upvotes = models.PositiveIntegerField(default=1)
-    downvotes = models.IntegerField(default=0)
-    class Meta:
-        abstract = True
-
 class ScoredModel(models.Model):
     """
     Index this one
@@ -34,7 +28,7 @@ class ScoredModel(models.Model):
         abstract = True
 
 class OwnedModel(models.Model): 
-    """
+    """ 
     """
     author = models.ForeignKey(user_model_label, verbose_name=_("Author"), related_name="%(class)ss")
 

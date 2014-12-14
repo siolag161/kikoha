@@ -95,7 +95,7 @@ PROJECT_APPS = (
     'communities',
     'threaded_comments',
     'django.contrib.comments',
-
+    'voting',
 )
 
 EXTENSION_APPS = (
@@ -254,7 +254,7 @@ PIPELINE_CSS = {
 }
 
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
-PIPELINE_CSSMIN_BINARY = '/usr/bin/ cssmin'
+PIPELINE_CSSMIN_BINARY = 'cssmin'
 PIPELINE_JS = {
     'master': {
         'source_filenames': (
@@ -269,7 +269,7 @@ PIPELINE_JS = {
     }
 }
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.uglifyjs.UglifyJSCompressor'
-PIPELINE_UGLIFYJS_BINARY = '/usr/bin/ uglifyjs'
+PIPELINE_UGLIFYJS_BINARY = 'uglifyjs'
 PIPELINE_UGLIFYJS_ARGUMENTS = ''
 
 ########## END PIPELINE CONFIGURATION

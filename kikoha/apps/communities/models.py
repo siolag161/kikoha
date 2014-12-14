@@ -1,14 +1,14 @@
 from django.db.models import URLField, permalink, CharField, SlugField, ForeignKey
 from django.utils.translation import ugettext_lazy as _
 
-from core.models import BasePostModel, ScoredModel, VotedModel
+from core.models import BasePostModel, ScoredModel
+from voting.models import VotedModel
 
 
 ################################## CONCRETE CLASESSES #########################################
 """
 """
 class Community(BasePostModel):
-
     def __unicode__(self):
 	return self.title
     
@@ -35,3 +35,6 @@ class Link(BasePostModel, ScoredModel, VotedModel):
     
     def save(self, *args, **kwargs):
 	super(Link,self).save(*args,**kwargs)
+
+    def __unicode__(self):
+	return self.title

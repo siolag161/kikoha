@@ -128,11 +128,14 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-html',
-    '--cover-package=accounts,core,threaded_comments',
+    '--cover-package=accounts,core,threaded_comments,voting',
     ]
 
 
-INSTALLED_APPS += (
-    'dummy',
-)
+# INSTALLED_APPS += (
+#     'dummy',
+# )
 #########
+ALLOWED_HOSTS = [
+    'localhost',
+]
