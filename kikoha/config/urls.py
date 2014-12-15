@@ -1,3 +1,4 @@
+
 from django.conf.urls import url, include
 from django.conf import settings
 from django.contrib import admin
@@ -32,6 +33,9 @@ admin.site.index_title = 'Base of Operations'
 
 urlpatterns += [
     url(r'^c/', include("communities.urls", namespace="community") ),
+    url(r'^c/', include("links.urls", namespace="link") ),
+
+
     #url(r'^c/', include("threaded_comments.urls", namespace="comments") ),
     # url(r'^cr/(\d+)/(.+)/$', 'django.contrib.contenttypes.views.shortcut', name='comments-url-redirect'),
     #url(r'^comments/', include("threaded_comments.urls", namespace="comments") ),
