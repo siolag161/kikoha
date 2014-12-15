@@ -7,7 +7,7 @@ from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field, S
 from crispy_forms.helper import FormHelper
 
 from core.forms import BaseForm
-from .models import Community, Link
+from .models import Community
 
 """
 """
@@ -28,9 +28,3 @@ class CommunityCreateForm(BaseForm):
     class Meta:
 	model = Community
 	fields = ('title',)
-"""
-"""
-class LinkCreateForm(BaseForm):
-    class Meta:
-	model = Link
-	fields = ('title', 'url')

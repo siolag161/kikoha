@@ -93,6 +93,7 @@ PROJECT_APPS = (
     'core',
     'accounts',
     'communities',
+    'links',
     'threaded_comments',
     'django.contrib.comments',
     'voting',
