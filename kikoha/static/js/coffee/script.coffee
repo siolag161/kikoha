@@ -110,7 +110,17 @@
     
   setActiveInput = () ->
     active_input = this.name
-   
+
+  ##############################
+  #                            #
+  #          VOTING            #
+  #                            #
+  ##############################
+  ajaxVote = (direction) ->
+    
+
+
+
   $(document).ready ->
     $("#start-comments").on "click", ".reply", createInlineReplyForm
     $("#submit-id-cancel").click cancelCommentForm
