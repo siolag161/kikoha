@@ -41,8 +41,9 @@ class VoteManager(models.Manager):
 		num_votes=Count('vote')
 	    )
 
-	    if result['point'] is None:
-		result['point'] = 0
+	if result['point'] is None:
+	    result['point'] = 0
+	logger.info("point: " + str(result)) 
         return result
 
     def get_points_in_bulk(self, objects):

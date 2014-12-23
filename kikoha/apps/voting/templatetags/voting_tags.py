@@ -11,83 +11,91 @@ register = template.Library()
 
 # Tags
 
+@register.filter
+def minus(votes, diff):
+    return int(votes) - int(diff)
+
+@register.filter
+def add(votes, diff):
+    return int(votes) + int(diff)
 
 class PointForObjectNode(template.Node):
     def __init__(self, object, context_var):
-	self.object = object
-	self.context_var = context_var
+        self.object = object
+        self.context_var = context_var	
 
     def render(self, context):
-	try:
-	    object = template.resolve_variable(self.object, context)
-	except template.VariableDoesNotExist:
-	    return ''
-	    context[self.context_var] = Vote.objects.get_point(object)
-	    return ''
+        try:
+            object = template.resolve_variable(self.object, context)
+        except template.VariableDoesNotExist:
+            return ''
+        context[self.context_var] = Vote.objects.get_point(object)
+        return ''
 
 
 class PointsForObjectsNode(template.Node):
     def __init__(self, objects, context_var):
-	self.objects = objects
-	self.context_var = context_var
+        self.objects = objects
+        self.context_var = context_var
 
     def render(self, context):
-	try:
-	    objects = template.resolve_variable(self.objects, context)
-	except template.VariableDoesNotExist:
-	    return ''
-	    context[self.context_var] = Vote.objects.get_points_in_bulk(objects)
-	    return ''
-
+        try:
+            objects = template.resolve_variable(self.objects, context)
+        except template.VariableDoesNotExist:
+            return ''
+        context[self.context_var] = Vote.objects.get_points_in_bulk(objects)
+        return ''
 
 class VoteByUserNode(template.Node):
     def __init__(self, user, object, context_var):
-	self.user = user
-	self.object = object
-	self.context_var = context_var
+        self.user = user
+        self.object = object
+        self.context_var = context_var
 
     def render(self, context):
-	try:
-	    user = template.resolve_variable(self.user, context)
-	    object = template.resolve_variable(self.object, context)
-	except template.VariableDoesNotExist:
-	    return ''
-	    context[self.context_var] = Vote.objects.get_for_user(object, user)
-	    return ''
+        try:
+            user = template.resolve_variable(self.user, context)
+            object = template.resolve_variable(self.object, context)
+        except template.VariableDoesNotExist:
+            return ''
+        context[self.context_var] = Vote.objects.get_for_user(object, user)
+        return ''
 
 
 class VotesByUserNode(template.Node):
     def __init__(self, user, objects, context_var):
-	self.user = user
-	self.objects = objects
-	self.context_var = context_var
+        self.user = user
+        self.objects = objects
+        self.context_var = context_var
 
     def render(self, context):
-	try:
-	    user = template.resolve_variable(self.user, context)
-	    objects = template.resolve_variable(self.objects, context)
-	except template.VariableDoesNotExist:
-	    return ''
-	    context[self.context_var] = Vote.objects.get_for_user_in_bulk(objects, user)
-	    return ''
+        try:
+            user = template.resolve_variable(self.user, context)
+            objects = template.resolve_variable(self.objects, context)
+        except template.VariableDoesNotExist:
+            return ''
+        context[self.context_var] = Vote.objects.get_for_user_in_bulk(objects, user)
+        return ''
 
 
 class DictEntryForItemNode(template.Node):
     def __init__(self, item, dictionary, context_var):
-	self.item = item
-	self.dictionary = dictionary
-	self.context_var = context_var
+        self.item = item
+        self.dictionary = dictionary
+        self.context_var = context_var
 
     def render(self, context):
-	try:
-	    dictionary = template.resolve_variable(self.dictionary, context)
-	    item = template.resolve_variable(self.item, context)
-	except template.VariableDoesNotExist:
-	    return ''
-	    context[self.context_var] = dictionary.get(item.id, None)
-	    return ''
+        try:
+            dictionary = template.resolve_variable(self.dictionary, context)
+            item = template.resolve_variable(self.item, context)
+        except template.VariableDoesNotExist:
+            return ''
+        context[self.context_var] = dictionary.get(item.id, None)
+        return ''
 
 
+import logging
+logger = logging.getLogger("werkzeug")
 def do_point_for_object(parser, token):
     """
     Retrieves the total point for an object and the number of votes
@@ -103,10 +111,11 @@ def do_point_for_object(parser, token):
     """
     bits = token.contents.split()
     if len(bits) != 4:
-	raise template.TemplateSyntaxError("'%s' tag takes exactly three arguments" % bits[0])
-	if bits[2] != 'as':
-	    raise template.TemplateSyntaxError("second argument to '%s' tag must be 'as'" % bits[0])
-	    return PointForObjectNode(bits[1], bits[3])
+        raise template.TemplateSyntaxError("'%s' tag takes exactly three arguments" % bits[0])
+    if bits[2] != 'as':
+        raise template.TemplateSyntaxError("second argument to '%s' tag must be 'as'" % bits[0])
+    logger.warn(parser.compile_filter(bits[3]))
+    return PointForObjectNode(bits[1], bits[3])
 
 
 def do_points_for_objects(parser, token):
@@ -120,10 +129,10 @@ def do_points_for_objects(parser, token):
     """
     bits = token.contents.split()
     if len(bits) != 4:
-	raise template.TemplateSyntaxError("'%s' tag takes exactly three arguments" % bits[0])
-	if bits[2] != 'as':
-	    raise template.TemplateSyntaxError("second argument to '%s' tag must be 'as'" % bits[0])
-	    return PointsForObjectsNode(bits[1], bits[3])
+        raise template.TemplateSyntaxError("'%s' tag takes exactly three arguments" % bits[0])
+    if bits[2] != 'as':
+        raise template.TemplateSyntaxError("second argument to '%s' tag must be 'as'" % bits[0])
+    return PointsForObjectsNode(bits[1], bits[3])
 
 
 def do_vote_by_user(parser, token):
@@ -138,12 +147,12 @@ def do_vote_by_user(parser, token):
     """
     bits = token.contents.split()
     if len(bits) != 6:
-	raise template.TemplateSyntaxError("'%s' tag takes exactly five arguments" % bits[0])
-	if bits[2] != 'on':
-	    raise template.TemplateSyntaxError("second argument to '%s' tag must be 'on'" % bits[0])
-	    if bits[4] != 'as':
-		raise template.TemplateSyntaxError("fourth argument to '%s' tag must be 'as'" % bits[0])
-		return VoteByUserNode(bits[1], bits[3], bits[5])
+        raise template.TemplateSyntaxError("'%s' tag takes exactly five arguments" % bits[0])
+    if bits[2] != 'on':
+        raise template.TemplateSyntaxError("second argument to '%s' tag must be 'on'" % bits[0])
+    if bits[4] != 'as':
+        raise template.TemplateSyntaxError("fourth argument to '%s' tag must be 'as'" % bits[0])
+    return VoteByUserNode(bits[1], bits[3], bits[5])
 
 
 def do_votes_by_user(parser, token):
@@ -158,12 +167,12 @@ def do_votes_by_user(parser, token):
     """
     bits = token.contents.split()
     if len(bits) != 6:
-	raise template.TemplateSyntaxError("'%s' tag takes exactly four arguments" % bits[0])
-	if bits[2] != 'on':
-	    raise template.TemplateSyntaxError("second argument to '%s' tag must be 'on'" % bits[0])
-	    if bits[4] != 'as':
-		raise template.TemplateSyntaxError("fourth argument to '%s' tag must be 'as'" % bits[0])
-		return VotesByUserNode(bits[1], bits[3], bits[5])
+        raise template.TemplateSyntaxError("'%s' tag takes exactly four arguments" % bits[0])
+    if bits[2] != 'on':
+        raise template.TemplateSyntaxError("second argument to '%s' tag must be 'on'" % bits[0])
+    if bits[4] != 'as':
+        raise template.TemplateSyntaxError("fourth argument to '%s' tag must be 'as'" % bits[0])
+    return VotesByUserNode(bits[1], bits[3], bits[5])
 
 
 def do_dict_entry_for_item(parser, token):
@@ -180,12 +189,12 @@ def do_dict_entry_for_item(parser, token):
     """
     bits = token.contents.split()
     if len(bits) != 6:
-	raise template.TemplateSyntaxError("'%s' tag takes exactly five arguments" % bits[0])
-	if bits[2] != 'from':
-	    raise template.TemplateSyntaxError("second argument to '%s' tag must be 'from'" % bits[0])
-	    if bits[4] != 'as':
-		raise template.TemplateSyntaxError("fourth argument to '%s' tag must be 'as'" % bits[0])
-		return DictEntryForItemNode(bits[1], bits[3], bits[5])
+        raise template.TemplateSyntaxError("'%s' tag takes exactly five arguments" % bits[0])
+    if bits[2] != 'from':
+        raise template.TemplateSyntaxError("second argument to '%s' tag must be 'from'" % bits[0])
+    if bits[4] != 'as':
+        raise template.TemplateSyntaxError("fourth argument to '%s' tag must be 'as'" % bits[0])
+    return DictEntryForItemNode(bits[1], bits[3], bits[5])
 
 register.tag('point_for_object', do_point_for_object)
 register.tag('points_for_objects', do_points_for_objects)
@@ -206,10 +215,10 @@ def confirm_vote_message(object_description, vote_direction):
         {% confirm_vote_message widget.title direction %}
     """
     if vote_direction == 'clear':
-	message = 'Confirm clearing your vote for <strong>%s</strong>.'
+        message = 'Confirm clearing your vote for <strong>%s</strong>.'
     else:
-	message = 'Confirm <strong>%s</strong> vote for <strong>%%s</strong>.' % vote_direction
-	return message % (escape(object_description),)
+        message = 'Confirm <strong>%s</strong> vote for <strong>%%s</strong>.' % vote_direction
+    return message % (escape(object_description),)
 
 register.simple_tag(confirm_vote_message)
 
@@ -235,13 +244,13 @@ def vote_display(vote, arg=None):
         {{ vote|vote_display:"Bodacious,Bogus" }}
     """
     if arg is None:
-	arg = 'Up,Down'
-	bits = arg.split(',')
-	if len(bits) != 2:
-	    return vote.vote  # Invalid arg
-	    up, down = bits
-	    if vote.vote == 1:
-		return up
-		return down
+        arg = 'Up,Down'
+    bits = arg.split(',')
+    if len(bits) != 2:
+        return vote.vote  # Invalid arg
+    up, down = bits
+    if vote.vote == 1:
+        return up
+    return down
 
 register.filter(vote_display)

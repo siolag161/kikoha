@@ -7,7 +7,7 @@
 {% block content %}
 <div class="container">
     <div class="col-xs-6 col-xs-offset-3">
-    <form action="{% url "community:link_create" name=name %}" method="POST" class="form-horizontal" role="form">
+    <form action="{% url "link:link_create" name=name %}" method="POST" class="form-horizontal" role="form">
       {% csrf_token %}
       {% load crispy_forms_tags %}
       {% crispy form %}

@@ -12,7 +12,6 @@ urlpatterns = [
     url(r'^', include('core.urls', namespace='core')),
 
     url(r'^users/', include("accounts.urls", namespace="users")),
-    #url(r'^links/', include("links.urls",   namespace="links") ),
     url(r'^accounts/', include('allauth.urls')), 
     url(r'^avatar/', include('avatar.urls')),
 
@@ -34,11 +33,6 @@ admin.site.index_title = 'Base of Operations'
 urlpatterns += [
     url(r'^c/', include("communities.urls", namespace="community") ),
     url(r'^c/', include("links.urls", namespace="link") ),
-
-
-    #url(r'^c/', include("threaded_comments.urls", namespace="comments") ),
-    # url(r'^cr/(\d+)/(.+)/$', 'django.contrib.contenttypes.views.shortcut', name='comments-url-redirect'),
-    #url(r'^comments/', include("threaded_comments.urls", namespace="comments") ),
 
     url(r'^comments/', include('threaded_comments.urls', namespace="comments")),
     url(r'^comments/', include('django.contrib.comments.urls')),

@@ -287,10 +287,10 @@ ROOT_URLCONF = 'config.urls'
 LOGIN_REDIRECT_URL = '/'
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = '/login/'
+LOGIN_URL = '/accounts/login/'
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#logout-url
-LOGOUT_URL = '/logout/'
+LOGOUT_URL = 'accounts/logout/'
 ########## END LOGIN/LOGOUT CONFIGURATION
 
 

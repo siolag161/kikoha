@@ -1,3 +1,4 @@
+   
 (($) ->
   createInlineReplyForm = (event) ->
     #alert 'aa'
@@ -116,21 +117,29 @@
   #          VOTING            #
   #                            #
   ##############################
-  ajaxVote = (direction) ->
-    
-
-
-
+  
+  window.ajaxLinkVote = (id, slug, direction) ->
+    url = "/c/~vote/" + id + '/'  + direction + "vote/"
+    alert url
+    $.post url, HTTP_X_REQUESTED: "XMLHttpRequest",
+      ((data) ->
+        if data.success is true
+          #alert('yeah')
+          #$("#score").text data.score.score
+          #$("#num_votes").text data.score.num_votes
+        else
+          #alert('oh-boy')
+          #alert "ERROR: " + data.error_message
+        return), "json"
+  
   $(document).ready ->
     $("#start-comments").on "click", ".reply", createInlineReplyForm
     $("#submit-id-cancel").click cancelCommentForm
-
+    
     commentform = $('form.comment-form')
     if ( commentform.length > 0 )
       commentform.find(':input').focus(setActiveInput).mousedown(setActiveInput)
       commentform.submit(onCommentFormSubmit)
-
-    
     return
 
 ) window.jQuery

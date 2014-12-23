@@ -20,6 +20,7 @@ POINTS = (
 ## todo: define maybe a contenttype base class
 @python_2_unicode_compatible
 class Vote(OwnedModel, TimeStampedModel, models.Model):
+    
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     object = generic.GenericForeignKey('content_type', 'object_id')

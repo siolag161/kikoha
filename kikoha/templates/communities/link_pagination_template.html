@@ -1,10 +1,11 @@
 {% load endless %}
 
+
 {% lazy_paginate 2,2 link_list %}
   {% for link in link_list %}
    <div class="row">
      <div class="col-xs-6"><a href="{{link.url}}">{{link.title}}</a></div>
-     <div class="col-xs-6"><a href="{% url 'community:link_detail_slug' link.id link.slug %}">Comments </a></div>
+     <div class="col-xs-6"><a href="{% url 'link:link_detail_slug' link.id link.slug %}">Comments </a></div>
    </div>
   {% endfor %}
 <div class="pagination">

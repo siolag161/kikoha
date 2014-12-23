@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load voting_tags %}
 {% load threadedcomments %}
-
 {% block title %}{{link.title}}{% endblock title %} 
+
 
 {% block content %}
 <div class="container">
   <div class="voting_info midcol unvoted link">
-    <div class="arrow up login-required">
+    <div class="arrow up login-required"  onclick="ajaxLinkVote('{{ link.id }}', '{{link.slug}}', 'up');">
     </div>
-    <div class="score downvotes">3698
+    <div class="score downvotes">{{ link.upvotes|minus:1}}
     </div>
-    <div class="score unvoted">3698
+    <div class="score unvoted">{{link.upvotes}}</div>
+    <div class="score upvotes">{{link.upvotes|add:1}}
     </div>
-    <div class="score upvotes">3698
-    </div>
-    <div class="arrow down login-required">
+    <div class="arrow down login-required" onclick="ajaxLinkVote('{{ link.id }}', '{{link.slug}}', 'down');">
     </div>
   </div>
   <div class="thumbnailed">
