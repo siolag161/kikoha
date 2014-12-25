@@ -243,10 +243,13 @@ a:hover {
   $color: $background-color;
 }
 
-.score {
+.point {
+  text-align: center;
+
   &.downvotes {
     display: none;
   }
+
   &.upvotes {
     display: none;
   }

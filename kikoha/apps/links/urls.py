@@ -16,7 +16,7 @@ urlpatterns = patterns(
 link_dict = {
     'model': Link,
     'template_object_name': 'link',
-    'allow_xmlhttprequest': 'true',
+    'allow_xmlhttprequest': True,
 }
 
 urlpatterns += patterns('',

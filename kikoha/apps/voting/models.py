@@ -42,12 +42,22 @@ class Vote(OwnedModel, TimeStampedModel, models.Model):
         return self.vote == -1
 
 
-UPDATE_TYPES = {
+TOTAL_CHANGES = {
     'CLEARED': -1,
-    'ADDED': +1,
+    'UPGRADED': 0,
+    'DOWNGRADED': 0,
     'CREATED': +1
 }
 
+UPVOTES_CHANGES = {    
+    'CLEARED': 0,
+    'UPGRADED': +1,
+    'DOWNGRADED': -1,
+    'CREATED': +1
+}
+
+import logging
+logger = logging.getLogger("werkzeug")
 class VotedModel(models.Model):
     upvotes = models.PositiveIntegerField(default=1)
     totalvotes = models.IntegerField(default=1)
@@ -68,8 +78,10 @@ class VotedModel(models.Model):
 
     def update_vote(self, update_type, vote):
 	if update_type and vote:
-	    change = UPDATE_TYPES[update_type]
-	    self.totalvotes += change
-	    if vote.is_upvote():
-		self.upvotes += change
+	    self.totalvotes += TOTAL_CHANGES[update_type]
+	    self.upvotes += UPVOTES_CHANGES[update_type]
+	    if update_type == 'CLEARED' and vote.vote > 0:
+		self.upvotes -= vote.vote
+	    if update_type == 'CREATED' and vote.vote < 0:
+		self.upvotes += vote.vote
 	    self.save()

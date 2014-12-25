@@ -32,7 +32,6 @@ class PointForObjectNode(template.Node):
         context[self.context_var] = Vote.objects.get_point(object)
         return ''
 
-
 class PointsForObjectsNode(template.Node):
     def __init__(self, objects, context_var):
         self.objects = objects

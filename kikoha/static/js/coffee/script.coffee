@@ -1,7 +1,6 @@
    
 (($) ->
   createInlineReplyForm = (event) ->
-    #alert 'aa'
     event.preventDefault()
     $form = $("#postcomment").clone(true)
     $cs = $(this).parent().parent()
@@ -9,7 +8,7 @@
     $form.find('.parent').val $id
     $form.attr('id', 'postcomment-'+$id)
     $cs.append $form
-    $(this).hide()
+    #$(this).hide()
     return
      
   resetForm = ($form) ->
@@ -77,7 +76,6 @@
           args.onsuccess data.comment_id, data.object_id, \
                    data.is_moderated, $added  if onsuccess
           if data.parent_id
-            #alert 'bunbun'
             $form.remove()
         else
           #commentFailure data
@@ -117,16 +115,18 @@
   #          VOTING            #
   #                            #
   ##############################
-  
+  process_voting_result = (direction,data) ->
+    point = data.point
+    num_votes = data.num_votes
+    $("voting_info").removeClass("up down clear")
+    $("voting_info").addClass(direction)
+    
   window.ajaxLinkVote = (id, slug, direction) ->
     url = "/c/~vote/" + id + '/'  + direction + "vote/"
-    alert url
     $.post url, HTTP_X_REQUESTED: "XMLHttpRequest",
       ((data) ->
         if data.success is true
-          #alert('yeah')
-          #$("#score").text data.score.score
-          #$("#num_votes").text data.score.num_votes
+          process_voting_result(direction,data.point)
         else
           #alert('oh-boy')
           #alert "ERROR: " + data.error_message

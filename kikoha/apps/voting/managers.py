@@ -43,7 +43,6 @@ class VoteManager(models.Manager):
 
 	if result['point'] is None:
 	    result['point'] = 0
-	logger.info("point: " + str(result)) 
         return result
 
     def get_points_in_bulk(self, objects):
@@ -85,27 +84,35 @@ class VoteManager(models.Manager):
         if vote not in (+1, 0, -1):
             raise ValueError('Invalid vote (must be +1/0/-1)')
         ctype = ContentType.objects.get_for_model(obj)
+
         try:
             v = self.get(author=user, content_type=ctype,
                          object_id=obj._get_pk_val())
-	    
+
+	    if v.vote == vote:
+		return
             if vote == 0 and not ZERO_VOTES_ALLOWED:
-		# vote = v.vote
                 v.delete()
 		update_type = 'CLEARED'
             else:
+		if vote > v.vote:
+		    update_type = 'UPGRADED'				
+		else:
+		    update_type ='DOWNGRADED'
+
 		v.vote = vote
-                v.save()
-		update_type = 'ADDED'
-	    vote_recorded.send( sender=v.__class__, object = obj, vote=v, update_type=update_type )
+		v.save()		
+		#update_type = 'UPDATED'
+	    vote_recorded.send( sender=v.__class__, object = obj, vote = v, update_type = update_type )
 	   
-        except models.ObjectDoesNotExist:	    
+        except models.ObjectDoesNotExist:
+	    
             if not ZERO_VOTES_ALLOWED and vote == 0:
                 return
             v = self.create(author=user, content_type=ctype,
                         object_id=obj._get_pk_val(), vote=vote)
+
 	    update_type = 'CREATED'
-	    # logger.info('created - sent by: %s - %s - %s' % (v, obj, update_type))
 	    vote_recorded.send( sender=v.__class__, object = obj, vote=v, update_type=update_type )
 
 	    # vote_recorded.send( sender=v, object=obj,

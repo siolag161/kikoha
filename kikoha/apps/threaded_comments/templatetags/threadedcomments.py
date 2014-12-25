@@ -15,10 +15,9 @@ import django.contrib.comments as django_comments
 register = template.Library()
 
 class BaseThreadedCommentNode(BaseCommentNode): 
-    def __init__(self, parent=None, flat=False, root_only=False, **kwargs):
+    def __init__(self, parent=None, with_poster=False, **kwargs):
         self.parent = parent
-        self.flat = flat
-        self.root_only = root_only
+	self.with_poster = with_poster
         super(BaseThreadedCommentNode, self).__init__(**kwargs)
 
     @classmethod
@@ -29,8 +28,10 @@ class BaseThreadedCommentNode(BaseCommentNode):
                 raise template.TemplateSyntaxError("Second argument in %r tag must be 'for'" % tokens[0])
 
         extra_kw = {}
-        if tokens[-1] in ('flat', 'root_only'):
-            extra_kw[str(tokens.pop())] = True
+	if token[-1] in ('with_poster'):
+	    extra_kw[tokens.pop()] = True
+        # if tokens[-1] in ('flat', 'root_only'):
+        #     extra_kw[str(tokens.pop())] = True
 
         if len(tokens) == 5:
             # {% get_whatever for obj as varname %}
@@ -68,7 +69,10 @@ class BaseThreadedCommentNode(BaseCommentNode):
         if not object_pk:
             return self.comment_model.objects.none()
 
-        qs = self.comment_model.objects.filter(
+	qs = self.comment_model.objects
+	if self.with_poster:
+	    qs = qs.select_related('user')
+	qs = qs.filter(
             content_type = ctype,
             object_pk    = smart_text(object_pk),
             site__pk     = settings.SITE_ID,
@@ -235,8 +239,11 @@ class RenderCommentListNode(CommentListNode):
             raise template.TemplateSyntaxError("Second argument in %r tag must be 'for'" % tokens[0])
 
         extra_kw = {}
-        if tokens[-1] in ('flat', 'root_only'):
-            extra_kw[str(tokens.pop())] = True
+	
+	if tokens[-1] in ('with_poster'):
+	    extra_kw[tokens.pop()] = True
+        # if tokens[-1] in ('flat', 'root_only'):
+        #     extra_kw[str(tokens.pop())] = True
 
         if len(tokens) == 3:  
             # {% render_comment_list for obj %}
@@ -301,18 +308,28 @@ def get_comment_list(parser, token):
     'as' clause.
     Syntax::
         {% get_comment_list for [object] as [varname] %}
-        {% get_comment_list for [object] as [varname] [flat|root_only] %}
         {% get_comment_list for [app].[model] [object_id] as [varname] %}
-        {% get_comment_list for [app].[model] [object_id] as [varname] [flat|root_only] %}
     Example usage::
         {% get_comment_list for event as comment_list %}
         {% for comment in comment_list %}
             ...
         {% endfor %}
-        {% get_comment_list for event as comment_list flat %}
     """
     return CommentListNode.handle_token(parser, token)
 
+
+@register.tag
+def render_comment_list_with_user(parser, token):
+    """
+    Render the comment list (as returned by ``{% get_comment_list %}``)
+    through the ``comments/list.html`` template
+    Syntax::
+        {% render_comment_list_with_user for [object] %}
+        {% render_comment_list_with_user for [app].[model] [object_id] %}
+    Example usage::
+        {% render_comment_list_with_user for event %}
+    """
+    return RenderCommentListNode.handle_token(parser, token)    
 
 @register.tag
 def render_comment_list(parser, token):
@@ -322,8 +339,6 @@ def render_comment_list(parser, token):
     Syntax::
         {% render_comment_list for [object] %}
         {% render_comment_list for [app].[model] [object_id] %}
-        {% render_comment_list for [object] [flat|root_only] %}
-        {% render_comment_list for [app].[model] [object_id] [flat|root_only] %}
     Example usage::
         {% render_comment_list for event %}
     """
